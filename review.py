@@ -357,7 +357,7 @@ if __name__ == "__main__":
             if (original_directory.endswith("/")):
                 build_dir_index = -1
             else:
-                build_dir_index = 0
+                build_dir_index = len(original_directory) + 1
         else:
             raise RuntimeError(
                 f"compile_commands.json contains absolute paths that I don't know how to deal with: '{original_directory}'"
