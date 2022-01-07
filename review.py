@@ -144,11 +144,11 @@ def get_line_ranges(diff, files):
 
 
 def get_clang_tidy_warnings(
-    line_filter, build_dir, clang_tidy_checks, clang_tidy_binary, files
+    line_filter, build_dir, clang_tidy_checks, clang_tidy_binary, extra_arg_before, files
 ):
     """Get the clang-tidy warnings"""
 
-    command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -line-filter={line_filter} {files}"
+    command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -extra_arg_before={extra_arg_before} -line-filter={line_filter} {files}"
     print(f"Running:\n\t{command}")
 
     try:
@@ -219,6 +219,7 @@ def main(
     token,
     include,
     exclude,
+    extra_arg_before,
     max_comments,
 ):
 
@@ -248,7 +249,7 @@ def main(
     print(f"Line filter for clang-tidy:\n{line_ranges}\n")
 
     clang_tidy_warnings = get_clang_tidy_warnings(
-        line_ranges, build_dir, clang_tidy_checks, clang_tidy_binary, " ".join(files)
+        line_ranges, build_dir, clang_tidy_checks, extra_arg_before, clang_tidy_binary, " ".join(files)
     )
     print("clang-tidy had the following warnings:\n", clang_tidy_warnings, flush=True)
 
@@ -294,6 +295,11 @@ if __name__ == "__main__":
         "--clang_tidy_checks",
         help="checks argument",
         default="'-*,performance-*,readability-*,bugprone-*,clang-analyzer-*,cppcoreguidelines-*,mpi-*,misc-*'",
+    )
+    parser.add_argument(
+        "--extra_arg_before",
+        help="prepend compiler argument",
+        default="",
     )
     parser.add_argument(
         "--include",
@@ -384,5 +390,6 @@ if __name__ == "__main__":
         token=args.token,
         include=include,
         exclude=exclude,
+        extra_arg_before=args.extra_arg_before,
         max_comments=args.max_comments,
     )
