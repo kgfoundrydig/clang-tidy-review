@@ -6,6 +6,8 @@ RUN apt update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends\
     tzdata \
+    build-essential \
+    cmake \
     clang \
     clang-tidy-6.0 \
     clang-tidy-7 \
