@@ -33,6 +33,10 @@ inputs:
     description: 'Comma-separated list of apt packages to install'
     required: false
     default: ''
+  extra_arg:
+    description: 'Extra compiler args to append'
+    required: false
+    default: ''
   extra_arg_before:
     description: 'Extra compiler args to prepend'
     required: false
@@ -60,5 +64,6 @@ runs:
     - --clang_tidy_checks=${{ inputs.clang_tidy_checks }}
     - --include='${{ inputs.include }}'
     - --exclude='${{ inputs.exclude }}'
+    - --extra_arg='${{ inputs.extra_arg}}'
     - --extra_arg_before='${{ inputs.extra_arg_before}}'
     - --apt-packages=${{ inputs.apt_packages }}
