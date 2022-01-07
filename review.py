@@ -153,7 +153,8 @@ def get_clang_tidy_warnings(
     else:
         dd_breakout = double_dash.split(",")
         dd_joined = " ".join(dd_breakout)
-        command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -extra-arg={extra_arg} -extra-arg-before={extra_arg_before} -line-filter={line_filter} {files} -- {dd_joined}"
+        dd_stripped = dd_joined.strip("'")
+        command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -extra-arg={extra_arg} -extra-arg-before={extra_arg_before} -line-filter={line_filter} {files} -- {dd_stripped}"
     print(f"Running:\n\t{command}")
 
 
