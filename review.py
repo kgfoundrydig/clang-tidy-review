@@ -144,7 +144,7 @@ def get_line_ranges(diff, files):
 
 
 def get_clang_tidy_warnings(
-    line_filter, build_dir, clang_tidy_checks, clang_tidy_binary, extra_arg_before, files
+    line_filter, build_dir, clang_tidy_checks, extra_arg_before, clang_tidy_binary, files
 ):
     """Get the clang-tidy warnings"""
 
