@@ -41,6 +41,10 @@ inputs:
     description: 'Extra compiler args to prepend'
     required: false
     default: ''
+  double_dash:
+    description: 'Arguments added after double dash'
+    required: false
+    default: ''
   max_comments:
     description: 'Maximum number of comments to post at once'
     required: false
@@ -65,5 +69,6 @@ runs:
     - --include='${{ inputs.include }}'
     - --exclude='${{ inputs.exclude }}'
     - --extra_arg='${{ inputs.extra_arg}}'
-    - --extra_arg_before='${{ inputs.extra_arg_before}}'
+    - --extra_arg_before='${{ inputs.extra_arg_before }}'
+    - --double_dash='${{ inputs.double_dash }}'
     - --apt-packages=${{ inputs.apt_packages }}

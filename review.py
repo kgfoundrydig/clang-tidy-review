@@ -144,12 +144,16 @@ def get_line_ranges(diff, files):
 
 
 def get_clang_tidy_warnings(
-    line_filter, build_dir, clang_tidy_checks, extra_arg, extra_arg_before, clang_tidy_binary, files
+    line_filter, build_dir, clang_tidy_checks, extra_arg, extra_arg_before, double_dash, clang_tidy_binary, files
 ):
     """Get the clang-tidy warnings"""
 
-    command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -extra-arg={extra_arg} -extra-arg-before={extra_arg_before} -line-filter={line_filter} {files}"
+    if double_dash == "":
+        command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -extra-arg={extra_arg} -extra-arg-before={extra_arg_before} -line-filter={line_filter} {files}"
+    else:
+        command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -extra-arg={extra_arg} -extra-arg-before={extra_arg_before} -line-filter={line_filter} {files} -- {double_dash}"
     print(f"Running:\n\t{command}")
+
 
     try:
         output = subprocess.run(
@@ -221,6 +225,7 @@ def main(
     exclude,
     extra_arg,
     extra_arg_before,
+    double_dash,
     max_comments,
 ):
 
@@ -250,7 +255,7 @@ def main(
     print(f"Line filter for clang-tidy:\n{line_ranges}\n")
 
     clang_tidy_warnings = get_clang_tidy_warnings(
-        line_ranges, build_dir, clang_tidy_checks, extra_arg, extra_arg_before, clang_tidy_binary, " ".join(files)
+        line_ranges, build_dir, clang_tidy_checks, extra_arg, extra_arg_before, double_dash, clang_tidy_binary, " ".join(files)
     )
     print("clang-tidy had the following warnings:\n", clang_tidy_warnings, flush=True)
 
@@ -305,6 +310,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--extra_arg_before",
         help="prepend compiler argument",
+        default="",
+    )
+    parser.add_argument(
+        "--double_dash",
+        help="arguments to follow double dash",
         default="",
     )
     parser.add_argument(
@@ -398,5 +408,6 @@ if __name__ == "__main__":
         exclude=exclude,
         extra_arg=args.extra_arg,
         extra_arg_before=args.extra_arg_before,
+        double_dash=args.double_dash,
         max_comments=args.max_comments,
     )
