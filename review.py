@@ -151,7 +151,9 @@ def get_clang_tidy_warnings(
     if double_dash == "":
         command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -extra-arg={extra_arg} -extra-arg-before={extra_arg_before} -line-filter={line_filter} {files}"
     else:
-        command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -extra-arg={extra_arg} -extra-arg-before={extra_arg_before} -line-filter={line_filter} {files} -- {double_dash}"
+        dd_breakout = double_dash.split(",")
+        dd_joined = " ".join(dd_breakout)
+        command = f"{clang_tidy_binary} -p={build_dir} -checks={clang_tidy_checks} -extra-arg={extra_arg} -extra-arg-before={extra_arg_before} -line-filter={line_filter} {files} -- {dd_joined}"
     print(f"Running:\n\t{command}")
 
 
